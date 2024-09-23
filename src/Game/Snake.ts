@@ -5,16 +5,12 @@ import { Vector } from "./Vector";
 function directionMap(d: Direction): Vector {
   switch (d) {
     case Direction.Up:
-      console.log("Up");
       return new Vector(0, -1);
     case Direction.Down:
-      console.log("Down");
       return new Vector(0, 1);
     case Direction.Left:
-      console.log("Left");
       return new Vector(-1, 0);
     case Direction.Right:
-      console.log("Right");
       return new Vector(1, 0);
   }
 }
@@ -35,17 +31,49 @@ class Snake {
     this.body.addToFront(startVector);
   }
 
-  move(direction: Direction) {
+  getHeadPosition() {
+    if (this.body.head === null) throw new Error("Snake has length 0");
+    return this.body.getHead();
+  }
+
+  move(direction: Direction, ate: boolean) {
     const dirVec = directionMap(direction);
-    if (!dirVec) return;
-    const newHead = this.body.head?.value.add(dirVec);
-    if (!newHead) return;
+    if (!dirVec) throw new Error("dirVec undefined");
+    const newHead = this.body.getHead()?.add(dirVec);
+    if (!newHead) throw new Error("newHead undefined");
+
     this.body.addToFront(newHead);
-    this.body.removeFromEnd();
+    if (!ate) {
+      console.log("no ate");
+      this.body.removeFromEnd();
+    }
   }
 
   getBody(): DoublyLinkedList<Vector> {
     return this.body;
+  }
+
+  hitItself() {
+    let hitItself = false;
+    let head = this.getHeadPosition();
+    this.body.forEachExceptHead((b) => {
+      if (head && b.equals(head)) {
+        hitItself = true;
+      }
+    });
+    return hitItself;
+  }
+
+  private getSecondPosition() {
+    if (this.body.head?.next) {
+      return this.body.head?.next.value;
+    }
+  }
+  directionAllowed(dir: Direction) {
+    const dirVec: Vector = directionMap(dir);
+    const secondPos = this.getSecondPosition();
+    if (!secondPos) return true;
+    return !this.getHeadPosition()?.add(dirVec).equals(secondPos);
   }
 }
 

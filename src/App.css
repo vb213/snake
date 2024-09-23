@@ -36,3 +36,9 @@
     transform: rotate(360deg);
   }
 }
+
+.game-container {
+  position: relative; /* The parent of the game and the overlay screen */
+  width: 100%;
+  height: 100vh;
+}

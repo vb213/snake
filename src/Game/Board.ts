@@ -7,6 +7,7 @@ import { Vector } from "./Vector";
 class Board {
   canvas: Canvas;
   boardFields: Vector[][];
+  //Width of a field in pxl
   fieldWidth: number = 0;
 
   constructor(widthFields: number, heightFields: number, c: Canvas) {
@@ -17,6 +18,9 @@ class Board {
     this.initBoardPositions(widthFields, heightFields);
   }
 
+  getDimensions() {
+    return new Vector(this.boardFields[0].length, this.boardFields.length);
+  }
   private initBoardPositions(widthFields: number, heightFields: number) {
     const canvasPixelWidth = this.canvas.props.width;
     const canvasPixelHeight = this.canvas.props.height;
@@ -34,10 +38,23 @@ class Board {
     }
   }
 
+  includesSnake(snake: Snake) {
+    const headPos = snake.getHeadPosition();
+    if (!headPos) return false;
+    //console.log("Snake head position", headPos);
+    return (
+      headPos.y >= 0 &&
+      headPos.y < this.boardFields.length &&
+      headPos.x >= 0 &&
+      headPos.x < this.boardFields[0].length
+    );
+  }
+
   draw(snake: Snake, food: Vector) {
     this.canvas.cleanUpCanvas();
-    this.drawSnake(snake);
     this.drawFood(food);
+    this.drawSnake(snake);
+    console.log("init draw");
   }
 
   private drawFood(food: Vector) {

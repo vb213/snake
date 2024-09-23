@@ -1,17 +1,31 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import logo from "./logo.svg";
 import Canvas from "./Canvas";
 import "./App.css";
 import { Direction, Game, Speed } from "./Game/Game";
+import GameOverScreen from "./GameOverScreen";
 
 function App() {
   let canvasRef = useRef<Canvas | null>(null);
   let gameRef = useRef<Game | null>(null);
+  const [isGameOver, setIsGameOver] = useState(false);
+
+  const handleDeath = () => {
+    setIsGameOver(true);
+  };
+
+  const resetGame = () => {
+    setIsGameOver(false);
+    if (gameRef.current) {
+      gameRef.current.reset();
+      console.log("Resetted");
+    }
+  };
   useEffect(() => {
     if (canvasRef.current) {
       const canvasElement = canvasRef.current;
       if (canvasElement) {
-        gameRef.current = new Game(10, 10, canvasElement);
+        gameRef.current = new Game(20, 20, canvasElement, handleDeath);
       }
     }
 
@@ -32,7 +46,11 @@ function App() {
             break;
           case "ArrowRight":
             //console.log("Right");
+            gameRef.current.startGame();
             gameRef.current.changeDirection(Direction.Right);
+            break;
+          case "Enter":
+            resetGame();
             break;
           default:
             break;
@@ -50,7 +68,16 @@ function App() {
     <div className="App">
       <header className="App-header">
         Snake
-        <Canvas ref={canvasRef} />
+        <div className="game-container">
+          <Canvas ref={canvasRef} />
+          {isGameOver ? (
+            <div>
+              <GameOverScreen onReset={resetGame}></GameOverScreen>
+            </div>
+          ) : (
+            <div></div>
+          )}
+        </div>
       </header>
     </div>
   );

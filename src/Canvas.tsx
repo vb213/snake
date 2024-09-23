@@ -35,6 +35,7 @@ class Canvas extends Component<CanvasProps, CanvasState> {
     if (canvas) {
       const context = canvas.getContext("2d");
       if (context && this.props.width && this.props.height) {
+        console.log("init clean canvas");
         context.fillStyle = "#ffffff";
         context.fillRect(0, 0, this.props.width, this.props.height);
       }
@@ -46,6 +47,7 @@ class Canvas extends Component<CanvasProps, CanvasState> {
   }
 
   fillRect(position: Vector, width: number, height: number, color: string) {
+    console.log("fillRect", position, width, height, color);
     const canvas = this.canvasRef.current;
     if (canvas) {
       const context = canvas.getContext("2d");

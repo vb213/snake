@@ -1,0 +1,53 @@
+.gameoverscreen {
+  position: absolute; /* Absolute positioning within the game container */
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7); /* Semi-transparent background */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Ensure it lays on top of the game */
+  color: white;
+}
+
+.gameoverimg {
+  width: 100px;
+}
+
+/* Animation keyframes for scaling effect */
+@keyframes scaleUp {
+  0% {
+    transform: scale(0.04);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(0.24);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(0.2);
+  }
+}
+
+/* Applying animation to the smiley */
+.animatedimg {
+  animation: scaleUp 0.5s ease-out forwards; /* Adjust timing and easing as needed */
+}
+
+.resetbutton {
+  margin-top: 20px;
+  padding: 10px 20px;
+  font-size: 18px;
+  cursor: pointer;
+  border: none;
+  border-radius: 5px;
+  background-color: #ffcc00;
+  color: black;
+}
+
+.resetbutton:hover {
+  background-color: #ffaa00;
+}
