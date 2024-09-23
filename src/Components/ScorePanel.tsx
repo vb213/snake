@@ -6,24 +6,34 @@ interface ScorePanelProps {}
 
 interface ScorePanelState {
   score: number;
+  animate: boolean;
 }
 
 class ScorePanel extends Component<ScorePanelProps, ScorePanelState> {
   constructor(props: ScorePanelProps) {
     super(props);
     this.state = {
-      score: 10, // Initialize with a default score (e.g., 0)
+      score: 0,
+      animate: false,
     };
   }
 
   setScoreState(score: number) {
     this.setState({
       score: score,
+      animate: true,
     });
+    setTimeout(() => {
+      this.setState({ animate: false });
+    }, 100);
   }
   render() {
+    const scorePanelClass = `${styles.scorepanel} ${
+      this.state.animate ? styles["scale-animation"] : ""
+    }`;
+
     console.log("Score panel render: ", this.state.score);
-    return <div className={styles.scorepanel}>{this.state.score}</div>;
+    return <div className={scorePanelClass}>{this.state.score}</div>;
   }
 }
 

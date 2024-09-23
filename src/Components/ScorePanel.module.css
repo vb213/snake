@@ -1,3 +1,13 @@
 .scorepanel {
   color: #000000;
+  width: 3em;
+  font-size: 24px;
+  font-weight: bold;
+  display: inline-block;
+  transition: transform 0.1s ease-in-out;
+  transform-origin: center;
+}
+
+.scale-animation {
+  transform: scale(1.2); /* Scale to 1.5 times the size */
 }

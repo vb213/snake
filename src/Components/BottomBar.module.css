@@ -1,0 +1,11 @@
+.bottombar {
+  position: fixed; /* Fixes the bar to the bottom of the viewport */
+  bottom: 0; /* Aligns it at the bottom */
+  left: 0;
+  width: 100%; /* Full width to span across the viewport */
+  background-color: #333; /* Dark background color */
+  color: #fff; /* White text for contrast */
+  text-align: center; /* Center the content inside */
+  padding: 20px 0; /* Add some padding for height */
+  z-index: 1000;
+}

@@ -58,6 +58,7 @@ export class Game {
     this.newFood();
     this.board.draw(this.snake, this.food);
     this.currentScore = 0;
+    this.updateScoreUI();
   }
 
   private tick() {
@@ -77,9 +78,13 @@ export class Game {
     this.onScoreUpdate = onScoreUpdate;
   }
 
+  updateScoreUI() {
+    this.onScoreUpdate(this.currentScore);
+  }
+
   private increaseScore() {
     this.currentScore += 10;
-    this.onScoreUpdate(this.currentScore);
+    this.updateScoreUI();
   }
 
   getScore() {

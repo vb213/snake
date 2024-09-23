@@ -46,10 +46,11 @@
   cursor: pointer;
   border: none;
   border-radius: 5px;
-  background-color: #ffcc00;
-  color: black;
+  background-color: #3c6ec5;
+  color: rgb(255, 255, 255);
+  transition: background-color 0.2s ease-in-out;
 }
 
 .resetbutton:hover {
-  background-color: #ffaa00;
+  background-color: #2600ff;
 }

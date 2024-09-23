@@ -9,7 +9,6 @@
   justify-content: center; /* Horizontally center the title */
   box-shadow: 0 4px 2px -2px gray;
   width: 100%; /* Optional shadow for depth */
-  margin-bottom: 1em;
 }
 
 .topbartitle {

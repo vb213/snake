@@ -6,6 +6,7 @@ import { Direction, Game, Speed } from "./Game/Game";
 import GameOverScreen from "./Components/GameOverScreen";
 import ScorePanel from "./Components/ScorePanel";
 import TopBar from "./Components/TopBar";
+import BottomBar from "./Components/BottomBar";
 
 function App() {
   let canvasRef = useRef<Canvas | null>(null);
@@ -73,21 +74,26 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
+        <TopBar></TopBar>
+      </header>
+      <div className="App-body">
         <div className="game-container">
-          <TopBar></TopBar>
           <div>
             <Canvas ref={canvasRef} />
+          </div>
+          <div>
             <ScorePanel ref={scoreRef}></ScorePanel>
           </div>
-          {isGameOver ? (
-            <div>
-              <GameOverScreen onReset={resetGame}></GameOverScreen>
-            </div>
-          ) : (
-            <div></div>
-          )}
         </div>
-      </header>
+      </div>
+      {isGameOver ? (
+        <div>
+          <GameOverScreen onReset={resetGame}></GameOverScreen>
+        </div>
+      ) : (
+        <div></div>
+      )}
+      <BottomBar></BottomBar>
     </div>
   );
 }
