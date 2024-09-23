@@ -88,6 +88,7 @@ export class Game {
   }
 
   getScore() {
+    console.log("Get Score: ", this.currentScore);
     return this.currentScore;
   }
 
@@ -116,7 +117,7 @@ export class Game {
   startGame() {
     if (this.running) return;
     this.running = true;
-    this.intervalId = setInterval(() => this.tick(), 100);
+    this.intervalId = setInterval(() => this.tick(), 60);
   }
 
   stopGame() {

@@ -12,6 +12,7 @@ function App() {
   let canvasRef = useRef<Canvas | null>(null);
   let gameRef = useRef<Game | null>(null);
   let scoreRef = useRef<ScorePanel | null>(null);
+  let gameOverScreenRef = useRef<GameOverScreen | null>(null);
   const [isGameOver, setIsGameOver] = useState(false);
 
   const handleDeath = () => {
@@ -36,6 +37,7 @@ function App() {
         scoreRef.current.setScoreState.bind(scoreRef.current)
       );
     }
+
     const handleKeyPress = (event: KeyboardEvent) => {
       if (gameRef.current) {
         switch (event.key) {
@@ -88,7 +90,11 @@ function App() {
       </div>
       {isGameOver ? (
         <div>
-          <GameOverScreen onReset={resetGame}></GameOverScreen>
+          <GameOverScreen
+            game={gameRef.current}
+            ref={gameOverScreenRef}
+            onReset={resetGame}
+          ></GameOverScreen>
         </div>
       ) : (
         <div></div>

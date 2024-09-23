@@ -9,13 +9,14 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  z-index: 1000; /* Ensure it lays on top of the game */
+  z-index: 1001; /* Ensure it lays on top of the game */
   color: white;
+  font-size: 18px;
 }
 
 .gameoverimg {
-  width: 500px;
-  height: 500px;
+  width: 20em;
+  height: 20em;
   animation: scaleUp 0.5s ease-out forwards;
 }
 
@@ -42,7 +43,7 @@
 .resetbutton {
   margin-top: 20px;
   padding: 10px 20px;
-  font-size: 18px;
+  font-size: inherit;
   cursor: pointer;
   border: none;
   border-radius: 5px;
@@ -53,4 +54,9 @@
 
 .resetbutton:hover {
   background-color: #2600ff;
+}
+
+.scorePanel {
+  font-size: 60pt;
+  font-weight: bold;
 }
