@@ -1,0 +1,19 @@
+/* TopBar.css */
+
+.topbar {
+  background-color: #3c6ec5; /* Dark background color */
+  color: #ffffff; /* White text color */
+  height: 60px; /* Adjust height as needed */
+  display: flex;
+  align-items: center; /* Vertically center the title */
+  justify-content: center; /* Horizontally center the title */
+  box-shadow: 0 4px 2px -2px gray;
+  width: 100%; /* Optional shadow for depth */
+  margin-bottom: 1em;
+}
+
+.topbartitle {
+  font-size: 24px; /* Adjust font size */
+  font-weight: bold;
+  margin: 0;
+}

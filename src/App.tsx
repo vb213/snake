@@ -1,13 +1,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import logo from "./logo.svg";
-import Canvas from "./Canvas";
+import Canvas from "./Components/Canvas";
 import "./App.css";
 import { Direction, Game, Speed } from "./Game/Game";
-import GameOverScreen from "./GameOverScreen";
+import GameOverScreen from "./Components/GameOverScreen";
+import ScorePanel from "./Components/ScorePanel";
+import TopBar from "./Components/TopBar";
 
 function App() {
   let canvasRef = useRef<Canvas | null>(null);
   let gameRef = useRef<Game | null>(null);
+  let scoreRef = useRef<ScorePanel | null>(null);
   const [isGameOver, setIsGameOver] = useState(false);
 
   const handleDeath = () => {
@@ -18,7 +21,6 @@ function App() {
     setIsGameOver(false);
     if (gameRef.current) {
       gameRef.current.reset();
-      console.log("Resetted");
     }
   };
   useEffect(() => {
@@ -28,7 +30,11 @@ function App() {
         gameRef.current = new Game(20, 20, canvasElement, handleDeath);
       }
     }
-
+    if (gameRef.current && scoreRef.current) {
+      gameRef.current.setOnScoreUpdate(
+        scoreRef.current.setScoreState.bind(scoreRef.current)
+      );
+    }
     const handleKeyPress = (event: KeyboardEvent) => {
       if (gameRef.current) {
         switch (event.key) {
@@ -67,9 +73,12 @@ function App() {
   return (
     <div className="App">
       <header className="App-header">
-        Snake
         <div className="game-container">
-          <Canvas ref={canvasRef} />
+          <TopBar></TopBar>
+          <div>
+            <Canvas ref={canvasRef} />
+            <ScorePanel ref={scoreRef}></ScorePanel>
+          </div>
           {isGameOver ? (
             <div>
               <GameOverScreen onReset={resetGame}></GameOverScreen>

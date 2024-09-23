@@ -1,4 +1,4 @@
-import Canvas from "../Canvas";
+import Canvas from "../Components/Canvas";
 import { DoublyLinkedList } from "./DoublyLinkedList";
 import { Direction, Game } from "./Game";
 import Snake from "./Snake";
@@ -54,7 +54,6 @@ class Board {
     this.canvas.cleanUpCanvas();
     this.drawFood(food);
     this.drawSnake(snake);
-    console.log("init draw");
   }
 
   private drawFood(food: Vector) {

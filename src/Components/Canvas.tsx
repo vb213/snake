@@ -1,7 +1,6 @@
 import React, { Component, RefObject } from "react";
-import { Vector } from "./Game/Vector";
-import { createThis } from "typescript";
-
+import { Vector } from "../Game/Vector";
+import styles from "./Canvas.module.css";
 interface CanvasProps {
   width: number;
   height: number;
@@ -35,7 +34,6 @@ class Canvas extends Component<CanvasProps, CanvasState> {
     if (canvas) {
       const context = canvas.getContext("2d");
       if (context && this.props.width && this.props.height) {
-        console.log("init clean canvas");
         context.fillStyle = "#ffffff";
         context.fillRect(0, 0, this.props.width, this.props.height);
       }
@@ -47,7 +45,6 @@ class Canvas extends Component<CanvasProps, CanvasState> {
   }
 
   fillRect(position: Vector, width: number, height: number, color: string) {
-    console.log("fillRect", position, width, height, color);
     const canvas = this.canvasRef.current;
     if (canvas) {
       const context = canvas.getContext("2d");
@@ -75,7 +72,7 @@ class Canvas extends Component<CanvasProps, CanvasState> {
         ref={this.canvasRef}
         width={width}
         height={height}
-        style={{ border: "1px solid black" }}
+        className={styles.board}
       />
     );
   }

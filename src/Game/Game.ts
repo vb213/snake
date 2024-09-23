@@ -1,5 +1,5 @@
 import Board from "./Board";
-import Canvas from "../Canvas";
+import Canvas from "../Components/Canvas";
 import Snake from "./Snake";
 import { Vector } from "./Vector";
 
@@ -27,6 +27,8 @@ export class Game {
   running: boolean;
   uiHandleDeath: () => void;
   directionChanged: boolean;
+  currentScore: number;
+  onScoreUpdate: (score: number) => void;
 
   private intervalId: NodeJS.Timeout | null = null;
 
@@ -39,17 +41,23 @@ export class Game {
     this.direction = Direction.Right;
     this.board = new Board(widthFields, heightFields, canvas);
     this.snake = new Snake(new Vector(5, 5));
-    this.food = new Vector(7, 7);
+    this.food = new Vector(7, 9);
     this.board.draw(this.snake, this.food);
     this.running = false;
     this.uiHandleDeath = handleDeath;
     this.directionChanged = false;
+    this.currentScore = 0;
+    //assumed to be replaced
+    this.onScoreUpdate = (score) => {
+      throw new Error("No score ui update function!!");
+    };
   }
 
   reset() {
     this.snake = new Snake(new Vector(5, 5));
-    this.food = new Vector(7, 7);
+    this.newFood();
     this.board.draw(this.snake, this.food);
+    this.currentScore = 0;
   }
 
   private tick() {
@@ -65,9 +73,23 @@ export class Game {
     this.board.draw(this.snake, this.food);
   }
 
+  setOnScoreUpdate(onScoreUpdate: (score: number) => void) {
+    this.onScoreUpdate = onScoreUpdate;
+  }
+
+  private increaseScore() {
+    this.currentScore += 10;
+    this.onScoreUpdate(this.currentScore);
+  }
+
+  getScore() {
+    return this.currentScore;
+  }
+
   checkFood() {
     if (!this.snake.getHeadPosition()) throw new Error("No Snake Head");
     if (this.snake.getHeadPosition()?.equals(this.food)) {
+      this.increaseScore();
       this.newFood();
       return true;
     }
@@ -76,7 +98,6 @@ export class Game {
 
   private newFood() {
     this.food = Vector.randomIntVector(this.board.getDimensions());
-    console.log("this.food", this.food);
   }
 
   checkDead() {
@@ -88,7 +109,6 @@ export class Game {
     return false;
   }
   startGame() {
-    console.log("Start Game", this.running);
     if (this.running) return;
     this.running = true;
     this.intervalId = setInterval(() => this.tick(), 100);
@@ -96,14 +116,12 @@ export class Game {
 
   stopGame() {
     if (this.intervalId) {
-      console.log("stop game");
       clearInterval(this.intervalId);
       this.running = false;
     }
   }
 
   changeDirection(newDir: Direction) {
-    //console.log("Changed:", newDir);
     if (this.directionAllowed(newDir)) {
       this.direction = newDir;
       this.directionChanged = true;
@@ -111,7 +129,9 @@ export class Game {
   }
 
   directionAllowed(newDir: Direction) {
-    /*
+    if (!this.snake.directionAllowed(newDir)) {
+      return false;
+    }
     switch (this.direction) {
       case Direction.Up:
         return newDir !== Direction.Down;
@@ -122,8 +142,6 @@ export class Game {
       case Direction.Right:
         return newDir !== Direction.Left;
     }
-    */
-    return this.snake.directionAllowed(newDir);
   }
 
   destroy() {

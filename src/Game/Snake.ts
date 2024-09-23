@@ -44,7 +44,6 @@ class Snake {
 
     this.body.addToFront(newHead);
     if (!ate) {
-      console.log("no ate");
       this.body.removeFromEnd();
     }
   }
