@@ -31,6 +31,7 @@ export class Game {
   onScoreUpdate: (score: number) => void;
 
   private intervalId: NodeJS.Timeout | null = null;
+  private animationId: number = 0;
 
   constructor(
     widthFields: number,
@@ -39,10 +40,10 @@ export class Game {
     handleDeath: () => void
   ) {
     this.direction = Direction.Right;
-    this.board = new Board(widthFields, heightFields, canvas);
+    this.board = new Board(widthFields, heightFields, canvas, this);
     this.snake = new Snake(new Vector(5, 5));
     this.food = new Vector(7, 9);
-    this.board.draw(this.snake, this.food);
+    this.board.draw();
     this.running = false;
     this.uiHandleDeath = handleDeath;
     this.directionChanged = false;
@@ -56,7 +57,7 @@ export class Game {
   reset() {
     this.snake = new Snake(new Vector(5, 5));
     this.newFood();
-    this.board.draw(this.snake, this.food);
+    this.board.draw();
     this.currentScore = 0;
     this.updateScoreUI();
   }
@@ -71,7 +72,7 @@ export class Game {
     }
 
     this.directionChanged = false;
-    this.board.draw(this.snake, this.food);
+    this.board.draw();
   }
 
   setOnScoreUpdate(onScoreUpdate: (score: number) => void) {
@@ -116,7 +117,7 @@ export class Game {
   startGame() {
     if (this.running) return;
     this.running = true;
-    this.intervalId = setInterval(() => this.tick(), 50);
+    this.intervalId = setInterval(() => this.tick(), 50); // start game logic
   }
 
   stopGame() {
@@ -126,6 +127,13 @@ export class Game {
     }
   }
 
+  getSnake() {
+    return this.snake;
+  }
+
+  getFood() {
+    return this.food;
+  }
   changeDirection(newDir: Direction) {
     if (this.directionAllowed(newDir)) {
       this.direction = newDir;

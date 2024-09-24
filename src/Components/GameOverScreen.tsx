@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import thumbdownIMG from "../thumbs-down.png";
+import thumbdownIMG from "../imgs/thumbs-down.png";
 import styles from "./GameOverScreen.module.css";
 import { Game } from "../Game/Game";
 

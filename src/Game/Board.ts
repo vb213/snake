@@ -3,15 +3,25 @@ import { DoublyLinkedList } from "./DoublyLinkedList";
 import { Direction, Game } from "./Game";
 import Snake from "./Snake";
 import { Vector } from "./Vector";
+import snakeheadimg from "../imgs/snakehead.png";
+import snakebodyimg from "../imgs/snakebody.png";
+import snaketailimg from "../imgs/snaketail.png";
 
 class Board {
   canvas: Canvas;
   boardFields: Vector[][];
   //Width of a field in pxl
   fieldWidth: number = 0;
+  game: Game;
 
-  constructor(widthFields: number, heightFields: number, c: Canvas) {
+  constructor(
+    widthFields: number,
+    heightFields: number,
+    c: Canvas,
+    game: Game
+  ) {
     this.canvas = c;
+    this.game = game;
     this.boardFields = Array.from({ length: heightFields }, () =>
       Array(widthFields).fill(null)
     );
@@ -50,7 +60,10 @@ class Board {
     );
   }
 
-  draw(snake: Snake, food: Vector) {
+  draw() {
+    console.log("draw");
+    const snake = this.game.getSnake();
+    const food = this.game.getFood();
     this.canvas.cleanUpCanvas();
     this.drawFood(food);
     this.drawSnake(snake);
@@ -63,15 +76,33 @@ class Board {
 
   private drawSnake(snake: Snake) {
     const body: DoublyLinkedList<Vector> = snake.getBody();
-    body.forEach(this.drawBodyElement.bind(this));
+    this.drawHead(snake.getHeadPosition());
+    body.forEachExceptHeadAndTail(this.drawBodyElement.bind(this));
+    if (!snake.hasLengthOne()) {
+      this.drawTail(snake.getTailPosition());
+    }
+  }
+
+  private drawHead(head: Vector) {
+    this.drawIMG(snakeheadimg, head);
+  }
+
+  private drawTail(tail: Vector) {
+    this.drawIMG(snaketailimg, tail);
   }
 
   private drawBodyElement(bodyElement: Vector) {
-    const pixelPositionOnBoard = this.getPixelPositionOnBoard(bodyElement);
-    this.canvas.fillSquare(
-      pixelPositionOnBoard,
+    this.drawIMG(snakebodyimg, bodyElement);
+  }
+
+  private drawIMG(imgsrc: string, fieldPosition: Vector) {
+    const pixelPosition = this.getPixelPositionOnBoard(fieldPosition);
+
+    this.canvas.drawImage(
+      pixelPosition,
       this.fieldWidth,
-      Game.snakeColor
+      this.fieldWidth,
+      imgsrc
     );
   }
 

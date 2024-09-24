@@ -40,6 +40,19 @@ class Canvas extends Component<CanvasProps, CanvasState> {
     }
   }
 
+  drawImage(position: Vector, width: number, height: number, imgsrc: string) {
+    const canvas = this.canvasRef.current;
+    const ctx = canvas?.getContext("2d");
+
+    if (ctx && canvas) {
+      const img = new Image();
+      img.src = imgsrc;
+      img.onload = () => {
+        ctx.drawImage(img, position.x, position.y, width, height);
+      };
+    }
+  }
+
   fillSquare(position: Vector, width: number, color: string) {
     this.fillRect(position, width, width, color);
   }

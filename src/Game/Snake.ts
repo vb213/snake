@@ -31,11 +31,21 @@ class Snake {
     this.body.addToFront(startVector);
   }
 
-  getHeadPosition() {
-    if (this.body.head === null) throw new Error("Snake has length 0");
-    return this.body.getHead();
+  getHeadPosition(): Vector {
+    const head = this.body.getHead();
+    if (!head) throw new Error("Snake has length 0");
+    return head;
   }
 
+  getTailPosition(): Vector {
+    const tail = this.body.getTail();
+    if (!tail) throw new Error("Snake has length 0");
+    return tail;
+  }
+
+  hasLengthOne() {
+    return this.body.hasLengthOne();
+  }
   move(direction: Direction, ate: boolean) {
     const dirVec = directionMap(direction);
     if (!dirVec) throw new Error("dirVec undefined");

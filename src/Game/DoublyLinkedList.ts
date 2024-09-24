@@ -42,6 +42,10 @@ export class DoublyLinkedList<T> {
     return this.tail?.value;
   }
 
+  hasLengthOne() {
+    return this.head === this.tail;
+  }
+
   addToEnd(value: T): void {
     const newNode = new DoublyListNode<T>(value);
     let oldTail: DoublyListNode<T> | null = this.tail;
@@ -65,11 +69,20 @@ export class DoublyLinkedList<T> {
   forEachExceptHead(callback: (t: T) => void) {
     if (this.head === null) return;
     let node: DoublyListNode<T> | null = this.head.next;
-    if (node === null) return;
-    do {
+
+    while (node) {
       callback(node.value);
       node = node.next;
-    } while (node);
+    }
+  }
+
+  forEachExceptHeadAndTail(callback: (t: T) => void) {
+    if (this.head === null) return;
+    let node: DoublyListNode<T> | null = this.head.next;
+    while (node && node.next) {
+      callback(node.value);
+      node = node.next;
+    } //while node != head
   }
 
   print(): void {
