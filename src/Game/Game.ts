@@ -29,10 +29,10 @@ export class Game {
   directionChanged: boolean;
   currentScore: number;
   onScoreUpdate: (score: number) => void;
-
+  animator: Animator;
   private intervalId: NodeJS.Timeout | null = null;
-  private animationId: number = 0;
 
+  static staticcanvas: Canvas;
   constructor(
     widthFields: number,
     heightFields: number,
@@ -40,18 +40,26 @@ export class Game {
     handleDeath: () => void
   ) {
     this.direction = Direction.Right;
+
     this.board = new Board(widthFields, heightFields, canvas, this);
     this.snake = new Snake(new Vector(5, 5));
     this.food = new Vector(7, 9);
-    this.board.draw();
     this.running = false;
     this.uiHandleDeath = handleDeath;
     this.directionChanged = false;
     this.currentScore = 0;
+    this.animator = new Animator(this.board.draw.bind(this.board));
     //assumed to be replaced
     this.onScoreUpdate = (score) => {
       throw new Error("No score ui update function!!");
     };
+    Game.staticcanvas = canvas;
+  }
+
+  onBoardReady() {
+    if (this.isReady()) {
+      this.board.draw();
+    }
   }
 
   reset() {
@@ -113,15 +121,26 @@ export class Game {
     }
     return false;
   }
+
+  isReady() {
+    return this.board.isReady();
+  }
+
   startGame() {
     if (this.running) return;
-    this.running = true;
-    this.intervalId = setInterval(() => this.tick(), 50); // start game logic
+    if (this.isReady()) {
+      this.running = true;
+      this.intervalId = setInterval(() => this.tick(), 50); // start game logic
+      this.animator.start();
+    } else {
+      setTimeout(this.startGame.bind(this), 100);
+    }
   }
 
   stopGame() {
     if (this.intervalId) {
       clearInterval(this.intervalId);
+      this.animator.stop();
       this.running = false;
     }
   }
@@ -158,5 +177,32 @@ export class Game {
 
   destroy() {
     this.stopGame();
+  }
+}
+
+class Animator {
+  private updateFunction: () => void;
+  private requestId: number | null;
+
+  constructor(updateFunction: () => void) {
+    this.updateFunction = updateFunction;
+    this.requestId = null;
+  }
+
+  // Start the animation loop
+  start(): void {
+    const animate = () => {
+      this.updateFunction(); // Calls the function passed from the component
+      this.requestId = requestAnimationFrame(animate); // Loop the animation
+    };
+    this.requestId = requestAnimationFrame(animate); // Start the loop
+  }
+
+  // Stop the animation
+  stop(): void {
+    if (this.requestId !== null) {
+      cancelAnimationFrame(this.requestId); // Stops the animation
+      this.requestId = null; // Reset the requestId
+    }
   }
 }

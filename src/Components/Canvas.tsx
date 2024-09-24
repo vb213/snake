@@ -40,16 +40,18 @@ class Canvas extends Component<CanvasProps, CanvasState> {
     }
   }
 
-  drawImage(position: Vector, width: number, height: number, imgsrc: string) {
+  drawImage(
+    position: Vector,
+    width: number,
+    height: number,
+    img: HTMLImageElement
+  ) {
     const canvas = this.canvasRef.current;
     const ctx = canvas?.getContext("2d");
 
     if (ctx && canvas) {
-      const img = new Image();
-      img.src = imgsrc;
-      img.onload = () => {
-        ctx.drawImage(img, position.x, position.y, width, height);
-      };
+      ctx.drawImage(img, position.x, position.y, width, height);
+      console.log("Image draw");
     }
   }
 

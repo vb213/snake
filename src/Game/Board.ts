@@ -7,6 +7,7 @@ import snakeheadimg from "../imgs/snakehead.png";
 import snakebodyimg from "../imgs/snakebody.png";
 import snaketailimg from "../imgs/snaketail.png";
 import foodimg from "../imgs/mouseIMG.png";
+import ImageLoader from "./ImageLoader";
 
 class Board {
   canvas: Canvas;
@@ -14,6 +15,8 @@ class Board {
   //Width of a field in pxl
   fieldWidth: number = 0;
   game: Game;
+  ready: boolean = false;
+  private images: { [key: string]: HTMLImageElement } = {}; // Store loaded images
 
   constructor(
     widthFields: number,
@@ -21,12 +24,44 @@ class Board {
     c: Canvas,
     game: Game
   ) {
+    this.loadImages();
     this.canvas = c;
     this.game = game;
     this.boardFields = Array.from({ length: heightFields }, () =>
       Array(widthFields).fill(null)
     );
     this.initBoardPositions(widthFields, heightFields);
+    this.loadImages().then(() => {
+      this.ready = true;
+      game.onBoardReady();
+    });
+  }
+
+  //hier weiter
+  private async loadImages() {
+    const imageLoader = new ImageLoader();
+    // Load your images here
+    const imagePromises = [
+      imageLoader
+        .loadImage(snakeheadimg)
+        .then((img) => (this.images["snakehead"] = img)),
+      imageLoader
+        .loadImage(snakebodyimg)
+        .then((img) => (this.images["snakebody"] = img)),
+      imageLoader
+        .loadImage(snaketailimg)
+        .then((img) => (this.images["snaketail"] = img)),
+      imageLoader.loadImage(foodimg).then((img) => (this.images["food"] = img)),
+    ];
+    console.log("after load", this.images["food"]);
+
+    return Promise.all(imagePromises).then(() => {
+      console.log("All images loaded");
+    });
+  }
+
+  isReady() {
+    return this.ready;
   }
 
   getDimensions() {
@@ -62,7 +97,7 @@ class Board {
   }
 
   draw() {
-    console.log("draw");
+    console.log("draw: ", this.canvas === Game.staticcanvas);
     const snake = this.game.getSnake();
     const food = this.game.getFood();
     this.canvas.cleanUpCanvas();
@@ -71,7 +106,9 @@ class Board {
   }
 
   private drawFood(food: Vector) {
-    this.drawIMG(foodimg, food);
+    this.drawIMG(this.images["food"], food);
+    //const pixelPosition = this.getPixelPositionOnBoard(food);
+    //this.canvas.fillSquare(pixelPosition, 20, "#ff0000");
   }
 
   private drawSnake(snake: Snake) {
@@ -84,26 +121,22 @@ class Board {
   }
 
   private drawHead(head: Vector) {
-    this.drawIMG(snakeheadimg, head);
+    this.drawIMG(this.images["snakehead"], head);
   }
 
   private drawTail(tail: Vector) {
-    this.drawIMG(snaketailimg, tail);
+    this.drawIMG(this.images["snaketail"], tail);
   }
 
   private drawBodyElement(bodyElement: Vector) {
-    this.drawIMG(snakebodyimg, bodyElement);
+    this.drawIMG(this.images["snakebody"], bodyElement);
   }
 
-  private drawIMG(imgsrc: string, fieldPosition: Vector) {
+  private drawIMG(img: HTMLImageElement, fieldPosition: Vector) {
     const pixelPosition = this.getPixelPositionOnBoard(fieldPosition);
-
-    this.canvas.drawImage(
-      pixelPosition,
-      this.fieldWidth,
-      this.fieldWidth,
-      imgsrc
-    );
+    //this.canvas.fillSquare(pixelPosition, 20, "#000000");
+    console.log("Draw Image: ", img);
+    this.canvas.drawImage(pixelPosition, this.fieldWidth, this.fieldWidth, img);
   }
 
   private getPixelPositionOnBoard(vector: Vector) {
