@@ -83,12 +83,11 @@ export class Game {
   }
 
   private increaseScore() {
-    this.currentScore += 10;
+    this.currentScore += 12345;
     this.updateScoreUI();
   }
 
   getScore() {
-    console.log("Get Score: ", this.currentScore);
     return this.currentScore;
   }
 
@@ -117,7 +116,7 @@ export class Game {
   startGame() {
     if (this.running) return;
     this.running = true;
-    this.intervalId = setInterval(() => this.tick(), 60);
+    this.intervalId = setInterval(() => this.tick(), 50);
   }
 
   stopGame() {

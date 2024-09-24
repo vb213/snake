@@ -32,7 +32,6 @@ class ScorePanel extends Component<ScorePanelProps, ScorePanelState> {
       this.state.animate ? styles["scale-animation"] : ""
     }`;
 
-    console.log("Score panel render: ", this.state.score);
     return <div className={scorePanelClass}>{this.state.score}</div>;
   }
 }
