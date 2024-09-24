@@ -6,6 +6,7 @@ import { Vector } from "./Vector";
 import snakeheadimg from "../imgs/snakehead.png";
 import snakebodyimg from "../imgs/snakebody.png";
 import snaketailimg from "../imgs/snaketail.png";
+import foodimg from "../imgs/mouseIMG.png";
 
 class Board {
   canvas: Canvas;
@@ -70,8 +71,7 @@ class Board {
   }
 
   private drawFood(food: Vector) {
-    const pixelPosition = this.getPixelPositionOnBoard(food);
-    this.canvas.fillSquare(pixelPosition, this.fieldWidth, Game.foodColor);
+    this.drawIMG(foodimg, food);
   }
 
   private drawSnake(snake: Snake) {

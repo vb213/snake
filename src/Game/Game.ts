@@ -57,7 +57,6 @@ export class Game {
   reset() {
     this.snake = new Snake(new Vector(5, 5));
     this.newFood();
-    this.board.draw();
     this.currentScore = 0;
     this.updateScoreUI();
   }
