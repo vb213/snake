@@ -76,13 +76,26 @@ export class DoublyLinkedList<T> {
     }
   }
 
-  forEachExceptHeadAndTail(callback: (t: T) => void) {
+  forEachExceptHeadAndTail(callback: (t: T, t_prev: T, t_next: T) => void) {
     if (this.head === null) return;
     let node: DoublyListNode<T> | null = this.head.next;
-    while (node && node.next) {
-      callback(node.value);
+    while (node && node.next && node.prev) {
+      callback(node.value, node.prev.value, node.next.value);
       node = node.next;
     } //while node != head
+  }
+
+  get(i: number) {
+    if (!this.head) throw new Error("Index out of bounds!");
+    return this.internalGet(i, this.head);
+  }
+
+  private internalGet(i: number, node: DoublyListNode<T>): T {
+    if (i === 0) {
+      return node.value;
+    }
+    if (!node.next) throw new Error("Index out of bounds!");
+    return this.internalGet(i - 1, node.next);
   }
 
   print(): void {

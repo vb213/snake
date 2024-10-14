@@ -44,14 +44,24 @@ class Canvas extends Component<CanvasProps, CanvasState> {
     position: Vector,
     width: number,
     height: number,
-    img: HTMLImageElement
+    img: HTMLImageElement,
+    rotation: number
   ) {
     const canvas = this.canvasRef.current;
     const ctx = canvas?.getContext("2d");
 
     if (ctx && canvas) {
-      ctx.drawImage(img, position.x, position.y, width, height);
-      console.log("Image draw");
+      ctx.save();
+
+      const centerX = position.x + width / 2;
+      const centerY = position.y + height / 2;
+      ctx.translate(centerX, centerY);
+
+      ctx.rotate((rotation * Math.PI) / 180); // Convert degrees to radians
+
+      ctx.drawImage(img, -width / 2, -height / 2, width, height);
+
+      ctx.restore();
     }
   }
 

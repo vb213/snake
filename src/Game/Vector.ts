@@ -2,6 +2,7 @@ export class Vector {
   x: number;
   y: number;
 
+  static readonly NULL_VECTOR: Vector = new Vector(0, 0);
   constructor(x: number, y: number) {
     this.x = x;
     this.y = y;
@@ -9,6 +10,9 @@ export class Vector {
 
   add(vector: Vector): Vector {
     return new Vector(this.x + vector.x, this.y + vector.y);
+  }
+  subtract(vector: Vector): Vector {
+    return new Vector(this.x - vector.x, this.y - vector.y);
   }
 
   equals(vector: Vector) {
