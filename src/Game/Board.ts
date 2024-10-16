@@ -135,6 +135,7 @@ class Board {
 
   private drawSnake(snake: Snake) {
     const body: DoublyLinkedList<Vector> = snake.getBody();
+    body.print();
     this.drawHead(snake.getHeadPosition());
     body.forEachExceptHeadAndTail(this.drawBodyElement.bind(this));
     if (!snake.hasLengthOne()) {
@@ -184,7 +185,6 @@ class Board {
     prev: Vector,
     next: Vector
   ): Orientation {
-    console.log(bodyElement, prev, next);
     const diffPrev: Vector = prev.subtract(bodyElement);
     const diffNext: Vector = next.subtract(bodyElement);
     const diff: Vector = diffNext.add(diffPrev);
@@ -201,6 +201,8 @@ class Board {
       return (prev.x = next.x ? Orientation.vertical : Orientation.horizontal);
     }
     //return Orientation.vertical;
+    console.log(bodyElement, prev, next);
+
     throw new Error("Orientation error");
   }
 

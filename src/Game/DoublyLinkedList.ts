@@ -105,6 +105,7 @@ export class DoublyLinkedList<T> {
       result.push(current.value);
       current = current.next;
     }
+    console.log("Body:");
     result.forEach((r) => {
       console.log(r);
     });
