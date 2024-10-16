@@ -25,7 +25,6 @@ export class DoublyLinkedList<T> {
 
   removeFromEnd(): void {
     if (!this.tail) return;
-
     if (this.head === this.tail) {
       this.head = this.tail = null;
     } else {
