@@ -44,8 +44,7 @@ class Canvas extends Component<CanvasProps, CanvasState> {
     position: Vector,
     width: number,
     height: number,
-    img: HTMLImageElement,
-    rotation: number
+    img: HTMLImageElement
   ) {
     const canvas = this.canvasRef.current;
     const ctx = canvas?.getContext("2d");
@@ -57,7 +56,7 @@ class Canvas extends Component<CanvasProps, CanvasState> {
       const centerY = position.y + height / 2;
       ctx.translate(centerX, centerY);
 
-      ctx.rotate((rotation * Math.PI) / 180); // Convert degrees to radians
+      //ctx.rotate((rotation * Math.PI) / 180); // Convert degrees to radians
 
       ctx.drawImage(img, -width / 2, -height / 2, width, height);
 
